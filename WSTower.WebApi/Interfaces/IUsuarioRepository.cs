@@ -15,8 +15,5 @@ namespace WSTower.WebApi.Interfaces
         void Atualizar(int id, Usuario usuarioAtualizado);
 
         Usuario BuscarPorId(int id);
-
-        Usuario BuscarPorEmailSenha(string Email, string Senha);
-
     }
 }
