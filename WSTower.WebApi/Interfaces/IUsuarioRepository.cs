@@ -16,7 +16,5 @@ namespace WSTower.WebApi.Interfaces
 
         Usuario BuscarPorId(int id);
 
-        Usuario BuscarPorEmailSenha(string Email, string Senha);
-
     }
 }
