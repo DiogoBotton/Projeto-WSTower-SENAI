@@ -11,20 +11,27 @@ namespace WSTower.WebApi.Repositories
     {
         WSTowerContext ctx = new WSTowerContext();
 
+        
         public List<Usuario> ListarUsuario()
         {
+
+            //Retorno uma lista de Usuarios
             return ctx.Usuario.ToList();
         }
 
         public void CadastrarUsuario(Usuario novoUsuario)
         {
+
+            //Adiciona um novo Usuario
             ctx.Usuario.Add(novoUsuario);
 
+            //Salva as informacoes
             ctx.SaveChanges();
         }
         public Usuario BuscarPorId(int id)
         {
-            
+
+            //Busca o usuario pelo seu ID
             return ctx.Usuario.FirstOrDefault(j => j.Id == id);
         }
 
