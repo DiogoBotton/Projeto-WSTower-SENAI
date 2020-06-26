@@ -16,8 +16,6 @@ namespace WSTower.WebApi.Domains
         public string Informacoes { get; set; }
         public int NumeroCamisa { get; set; }
         public byte[] Foto { get; set; }
-        public int? SelecaoId { get; set; }
-
-        public virtual Selecao Selecao { get; set; }
+        public int SelecaoId { get; set; }
     }
 }
