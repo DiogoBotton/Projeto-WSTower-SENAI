@@ -12,8 +12,12 @@ namespace WSTower.WebApi.Repositories
     {
         WSTowerContext ctx = new WSTowerContext();
 
+
         public IEnumerable<Usuario> ListarUsuario()
+
         {
+
+            //Retorno uma lista de Usuarios
             return ctx.Usuario.ToList();
         }
 
@@ -25,9 +29,10 @@ namespace WSTower.WebApi.Repositories
 
             if (!UserIsValid(novoUsuario))
                 throw new ArgumentException("Nome, apelido e senha devem ter ao menos 3 caracteres.");
-
+                
             ctx.Usuario.Add(novoUsuario);
 
+            //Salva as informacoes
             ctx.SaveChanges();
         }
 
@@ -35,6 +40,8 @@ namespace WSTower.WebApi.Repositories
         public Usuario BuscarPorId(int id)
         {
 
+
+            //Busca o usuario pelo seu ID
             return ctx.Usuario.FirstOrDefault(j => j.Id == id);
         }
 
