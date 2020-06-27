@@ -6,8 +6,8 @@ namespace WSTower.WebApi.Domains
     public partial class Jogo
     {
         public int Id { get; set; }
-        public int? SelecaoCasa { get; set; }
-        public int? SelecaoVisitante { get; set; }
+        public int SelecaoCasa { get; set; }
+        public int SelecaoVisitante { get; set; }
         public int PlacarCasa { get; set; }
         public int PlacarVisitante { get; set; }
         public int PenaltisCasa { get; set; }

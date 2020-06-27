@@ -21,8 +21,8 @@ namespace WSTower.WebApi.Domains
         [Required(ErrorMessage = "Informe seu apelido")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "O Apelido deve conter entre 3 e 30 caracteres.")]
         public string Apelido { get; set; }
-        // Define que a foto é obrigatória
-        [Required(ErrorMessage = "Informe sua foto")]
+        // Define o tipo do dado
+        [DataType(DataType.ImageUrl)]
         public byte[] Foto { get; set; }
         // Define que a senha é obrigatória
         [Required(ErrorMessage = "Informe sua senha")]
