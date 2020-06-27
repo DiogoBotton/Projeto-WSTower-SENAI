@@ -31,6 +31,11 @@ namespace WSTower.WebApi.Repositories
             return ctx.Jogo.FirstOrDefault(x => x.Id == id);
         }
 
+        public List<Jogo> GetAllPorTime(int id)
+        {
+            return ctx.Jogo.Where(x => x.PenaltisCasa == id || x.PenaltisVisitante == id).ToList();
+        }
+
         public IEnumerable<Jogo> GetByStadium(string nameStadium)
         {
             return ctx.Jogo.Where(x => x.Estadio.ToUpper() == nameStadium.ToUpper());

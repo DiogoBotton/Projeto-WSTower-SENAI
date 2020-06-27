@@ -29,14 +29,7 @@ namespace WSTower.WebApi.Controllers
 
                 if (selecoes == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
-
-                var jogos = new JogoRepository().GetAll();
-
-                jogos.ForEach((x) =>
-                {
-                    
-                });
-
+                
                 var jogosViewModel = selecoes.Select(x => new
                 {
                     Nome = x.Nome,
