@@ -28,7 +28,7 @@ namespace WSTower.WebApi.Controllers
 
         [HttpGet]
         
-        public IActionResult GetAll(string datest = null, string estadio = null, string nome = null)
+        public IActionResult GetAll()
         {
             try
             {
@@ -41,8 +41,8 @@ namespace WSTower.WebApi.Controllers
                 {
                     Data = x.Data,
                     Estadio = x.Estadio,
-                    SelecaoCasa = x.SelecaoCasa,
-                    SelecaoVisitante = x.SelecaoVisitante,
+                    SelecaoCasa = _selecaoRepository.GetById(x.SelecaoCasa),
+                    SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante),
                     PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
                     Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
                 });
@@ -54,6 +54,35 @@ namespace WSTower.WebApi.Controllers
                 return StatusCode(400, e);
             }
         }
+
+        [HttpGet("estadio/{nomeDoEstadio}")]
+        public IActionResult GetByStadium(string nomeDoEstadio)
+        {
+            try
+            {
+                var jogos = _jogoRepository.GetAll().Where(x => x.Estadio.ToUpper() == nomeDoEstadio.ToUpper());
+   
+                if (jogos == null)
+                    return StatusCode(204, "Objeto não encontrado na base de dados");
+
+                var jogosViewModel = jogos.Select(x => new
+                {
+                    Data = x.Data,
+                    Estadio = x.Estadio,
+                    SelecaoCasa = _selecaoRepository.GetById(x.SelecaoCasa),
+                    SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante),
+                    PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
+                    Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
+                }); ;
+
+                return StatusCode(200, jogosViewModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(400, e);
+            }
+        }
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
