@@ -41,8 +41,8 @@ namespace WSTower.WebApi.Controllers
                 {
                     Data = x.Data,
                     Estadio = x.Estadio,
-                    SelecaoCasa = _selecaoRepository.GetById(x.SelecaoCasa),
-                    SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante),
+                    SelecaoCasa = _selecaoRepository.GetById(x.SelecaoCasa).Nome,
+                    SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante).Nome,
                     PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
                     Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
                 });
@@ -62,6 +62,63 @@ namespace WSTower.WebApi.Controllers
             {
                 var jogos = _jogoRepository.GetAll().Where(x => x.Estadio.ToUpper() == nomeDoEstadio.ToUpper());
    
+                if (jogos == null)
+                    return StatusCode(204, "Objeto não encontrado na base de dados");
+
+                var jogosViewModel = jogos.Select(x => new
+                {
+                    Data = x.Data,
+                    Estadio = x.Estadio,
+                    SelecaoCasa = _selecaoRepository.GetById(x.SelecaoCasa).Nome,
+                    SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante).Nome,
+                    PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
+                    Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
+                }); ;
+
+                return StatusCode(200, jogosViewModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(400, e);
+            }
+        }
+
+
+        [HttpGet("selecao/{nomeDaSelecao}")]
+        public IActionResult GetByTeamName(string nomeDaSelecao)
+        {
+            try
+            {
+                var jogos = _jogoRepository.GetAll().Where(x => _selecaoRepository.GetById(x.SelecaoVisitante).Nome == nomeDaSelecao.ToUpper());
+   
+                if (jogos == null)
+                    return StatusCode(204, "Objeto não encontrado na base de dados");
+
+                var jogosViewModel = jogos.Select(x => new
+                {
+                    Data = x.Data,
+                    Estadio = x.Estadio,
+                    SelecaoCasa = _selecaoRepository.GetById(x.SelecaoCasa).Nome,
+                    SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante).Nome,
+                    PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
+                    Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
+                }); ;
+
+                return StatusCode(200, jogosViewModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(400, e);
+            }
+        }
+
+
+        [HttpGet("data/{date}")]
+        public IActionResult GetByDate(string date)
+        {
+            try
+            {
+                var jogos = _jogoRepository.GetAll().Where(x => x.Data == DateTime.Parse(date));
                 if (jogos == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
 
