@@ -89,7 +89,7 @@ namespace WSTower.WebApi.Controllers
         {
             try
             {
-                var jogos = _jogoRepository.GetAll().Where(x => _selecaoRepository.GetById(x.SelecaoVisitante).Nome == nomeDaSelecao.ToUpper());
+                var jogos = _jogoRepository.GetAll().Where(x => _selecaoRepository.GetById(x.SelecaoVisitante).Nome.ToUpper() == nomeDaSelecao.ToUpper());
    
                 if (jogos == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
