@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using WSTower.WebApi.Domains;
 using WSTower.WebApi.Libraries;
 using WSTower.WebApi.Repositories;
@@ -28,14 +26,12 @@ namespace WSTower.WebApi.Controllers
         }
 
         [HttpGet]
-        
         public IActionResult GetAll()
         {
             try
             {
-                var jogos = _jogoRepository.GetAll();
-   
-                if (jogos == null)
+                IEnumerable<Jogo> jogos;
+                if ((jogos = _jogoRepository.GetAll()) == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
 
                 var jogosViewModel = jogos.Select(x => new
@@ -61,9 +57,8 @@ namespace WSTower.WebApi.Controllers
         {
             try
             {
-                var jogos = _jogoRepository.GetAll().Where(x => x.Estadio.ToUpper() == nomeDoEstadio.ToUpper());
-   
-                if (jogos == null)
+                IEnumerable<Jogo> jogos;
+                if ((jogos = _jogoRepository.GetByStadium(nomeDoEstadio)) == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
 
                 var jogosViewModel = jogos.Select(x => new
@@ -74,7 +69,7 @@ namespace WSTower.WebApi.Controllers
                     SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante).Nome,
                     PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
                     Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
-                }); ;
+                });
 
                 return StatusCode(200, jogosViewModel);
             }
@@ -83,16 +78,14 @@ namespace WSTower.WebApi.Controllers
                 return StatusCode(400, e);
             }
         }
-
 
         [HttpGet("selecao/{nomeDaSelecao}")]
         public IActionResult GetByTeamName(string nomeDaSelecao)
         {
             try
             {
-                var jogos = _jogoRepository.GetAll().Where(x => _selecaoRepository.GetById(x.SelecaoVisitante).Nome.ToUpper() == nomeDaSelecao.ToUpper());
-   
-                if (jogos == null)
+                IEnumerable<Jogo> jogos;
+                if ((jogos = _jogoRepository.GetByTeam(nomeDaSelecao)) == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
 
                 var jogosViewModel = jogos.Select(x => new
@@ -113,14 +106,13 @@ namespace WSTower.WebApi.Controllers
             }
         }
 
-
         [HttpGet("data/{date}")]
         public IActionResult GetByDate(string date)
         {
             try
             {
-                var jogos = _jogoRepository.GetAll().Where(x => x.Data == DateTime.Parse(date));
-                if (jogos == null)
+                IEnumerable<Jogo> jogos;
+                if ((jogos = _jogoRepository.GetByDate(DateTime.Parse(date))) == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
 
                 var jogosViewModel = jogos.Select(x => new
@@ -131,7 +123,7 @@ namespace WSTower.WebApi.Controllers
                     SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante),
                     PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
                     Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
-                }); ;
+                });
 
                 return StatusCode(200, jogosViewModel);
             }
@@ -141,19 +133,17 @@ namespace WSTower.WebApi.Controllers
             }
         }
 
-
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             try
             {
                 Jogo jogo;
-                if((jogo = _jogoRepository.GetById(id)) == null)
+                if ((jogo = _jogoRepository.GetById(id)) == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
 
                 var selecaoCasa = _selecaoRepository.GetById(jogo.SelecaoCasa);
                 var selecaoVisitante = _selecaoRepository.GetById(jogo.SelecaoVisitante);
-
 
                 var jogadoresCasa = _jogadorRepository.GetByTeam(selecaoCasa.Id)
                     .OrderBy(x => x.Posicao)

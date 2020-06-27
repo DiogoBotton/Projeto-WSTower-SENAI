@@ -11,5 +11,8 @@ namespace WSTower.WebApi.Interfaces
     {
         Jogo GetById(int id);
         List<Jogo> GetAll();
+        IEnumerable<Jogo> GetByStadium(string nameStadium);
+        IEnumerable<Jogo> GetByDate(DateTime date);
+        IEnumerable<Jogo> GetByTeam(string teamName);
     }
 }
