@@ -9,6 +9,6 @@ namespace WSTower.WebApi.Interfaces
     public interface ISelecaoRepository
     {
         Selecao GetById(int id);
-        List<Selecao> GetAll();
+        IEnumerable<Selecao> GetAll();
     }
 }

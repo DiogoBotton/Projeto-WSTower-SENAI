@@ -9,10 +9,12 @@ using WSTower.WebApi.Interfaces;
 using WSTower.WebApi.Repositories;
 using System.Reflection.Metadata;
 using WSTower.WebApi.Domains;
+using WSTower.WebApi.Libraries;
 
 namespace WSTower.WebApi.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class JogadoresController : ControllerBase
     {
@@ -25,20 +27,24 @@ namespace WSTower.WebApi.Controllers
             selecaoRepository = new SelecaoRepository();
         }
 
-        [HttpGet("info-jogador/{id}")]
+        [HttpGet("{id}")]
         public IActionResult InformacoesJogadorById(int id)
         {
             var jogador = jogadorRepository.GetById(id);
 
             if (jogador == null)
-                return StatusCode(404, $"Id {id} de jogador não existe no banco de dados.");
+                return StatusCode(404, $"O objeto não existe na base de dados.");
 
             var selecao = selecaoRepository.GetById(jogador.SelecaoId);
 
             var infoJogador = new
             {
-                bandeiraPais = "classe static Image não funciona, binário fica feio então vou deixar assim mesmo infelizmente... decepcionado com o visual studio",
-                Selecao = selecao.Nome,
+                Selecao = new
+                {
+                    selecao.Nome,
+                    bandeiraPais = Tools.ToImage(selecao.Bandeira)
+                },
+
                 Nome = jogador.Nome,
                 Nascimento = jogador.Nascimento.ToShortDateString(),
                 NumeroCamisa = jogador.NumeroCamisa,
@@ -53,8 +59,8 @@ namespace WSTower.WebApi.Controllers
             return StatusCode(200, infoJogador);
         }
 
-        [HttpGet("jogadores-selecao/{selecaoId}")]
-        public IActionResult GetAllJogadoresBySelecaoId(int selecaoId)
+        [HttpGet("selecao/{id}")]
+        public IActionResult GetAllJogadoresBySelecaoId(int id)
         {
             var jogadores = jogadorRepository.GetAll();
             var selecoes = selecaoRepository.GetAll();
@@ -62,8 +68,26 @@ namespace WSTower.WebApi.Controllers
             //Retorna todos os jogadores de uma seleção
             var infoJogadores = new
             {
-                Selecao = selecoes.FirstOrDefault(y => y.Id == selecaoId).Nome,
-                Jogador = jogadores.Where(j => j.SelecaoId == selecaoId),
+                Selecao = selecoes.First(y => y.Id == id).Nome,
+                Jogadores = jogadores.Where(j => j.SelecaoId == id).Select(x => new
+                {
+                    Bandeira = Tools.ToImage((new SelecaoRepository().GetById(x.SelecaoId).Bandeira)),
+                    Pais = new SelecaoRepository().GetById(x.SelecaoId).Nome,
+                    Foto = Tools.ToImage(x.Foto),
+                    Posicao = x.Posicao,
+                    DataNascimento = x.Nascimento,
+                    Idade = Tools.GetAge(x.Nascimento),
+                    NumeroCamisa = x.Posicao == "Técnico" ? 0 : x.NumeroCamisa,
+                    Sobre = new
+                    {
+                        Nome = x.Nome,
+                        Sobre = x.Informacoes
+                    },
+                    Gols = x.Qtdegols,
+                    CartoesAmarelos = x.QtdecartoesAmarelo,
+                    CartoesVermelhos = x.QtdecartoesVermelho,
+                    Faltas = x.Qtdefaltas
+                })
             };
 
             return StatusCode(200, infoJogadores);

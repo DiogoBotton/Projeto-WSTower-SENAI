@@ -26,7 +26,7 @@ namespace WSTower.WebApi.Domains
             {
                 //POR FAVOR NÃO APAGAR NENHUMA LINHA DESTE ESCOPO, APENAS COMENTAR!!!
                 //optionsBuilder.UseSqlServer("Data Source=Coloque seu servidor aqui; initial catalog=Campeonato; Integrated Security=True");
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-GVQ9O4O\\SQLEXPRESS; initial catalog=Campeonato; Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-L3DVSSK\\SQLEXPRESS; initial catalog=Campeonato; Integrated Security=True");
             }
         }
 

@@ -36,11 +36,19 @@ namespace WSTower.WebApi.Controllers
         [HttpPost]
         public IActionResult Post(Usuario novoUsuario)
         {
-            _usuarioRepository.CadastrarUsuario(novoUsuario);
+            try
+            {
+                _usuarioRepository.CadastrarUsuario(novoUsuario);
 
-            // Retorna um status code
-            return StatusCode(201);
+                // Retorna um status code
+                return StatusCode(201,"Cadastrado com sucesso");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(400, e); 
+            }
         }
+
         [HttpPut("{id}")]
         public IActionResult Put(int id, Usuario usuarioAtualizado)
         {
@@ -56,6 +64,5 @@ namespace WSTower.WebApi.Controllers
             // Retora a resposta da requisição fazendo a chamada para o método
             return Ok(_usuarioRepository.BuscarPorId(id));
         }
-
     }
 }

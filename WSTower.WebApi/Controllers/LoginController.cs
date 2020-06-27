@@ -35,11 +35,11 @@ namespace WSTower.WebApi.Controllers
                     return StatusCode(404, "Usuário ou senha inválidos.");
 
                 var informacoesUsuario = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Email, retorno.Email),
-                new Claim(JwtRegisteredClaimNames.UniqueName, retorno.Apelido),
-                new Claim(JwtRegisteredClaimNames.Jti, retorno.Id.ToString()),
-            };
+                {
+                     new Claim(JwtRegisteredClaimNames.Email, retorno.Email),
+                     new Claim(JwtRegisteredClaimNames.UniqueName, retorno.Apelido),
+                     new Claim(JwtRegisteredClaimNames.Jti, retorno.Id.ToString()),
+                };
 
                 //Define a chave de acesso ao token
                 var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("wstower-chave-autentificacao"));

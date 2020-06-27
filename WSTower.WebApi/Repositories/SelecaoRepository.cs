@@ -16,9 +16,9 @@ namespace WSTower.WebApi.Repositories
             ctx = new WSTowerContext();
         }
 
-        public List<Selecao> GetAll()
+        public IEnumerable<Selecao> GetAll()
         {
-            return ctx.Selecao.ToList();
+            return ctx.Selecao;
         }
 
         public Selecao GetById(int id)

@@ -23,8 +23,6 @@ namespace WSTower.WebApi.Domains
         // Define o tipo do dado
         [DataType(DataType.Text)]
         public string Apelido { get; set; }
-        // Define que o nome é obrigatória
-        [Required(ErrorMessage = "Informe sua foto")]
         // Define o tipo do dado
         [DataType(DataType.ImageUrl)]
         public byte[] Foto { get; set; }

@@ -9,11 +9,8 @@ namespace WSTower.WebApi.Interfaces
     interface IUsuarioRepository
     {
         void CadastrarUsuario(Usuario novoUsuario);
-
-        List<Usuario> ListarUsuario();
-
         void Atualizar(int id, Usuario usuarioAtualizado);
-
         Usuario BuscarPorId(int id);
+        IEnumerable<Usuario> ListarUsuario();
     }
 }

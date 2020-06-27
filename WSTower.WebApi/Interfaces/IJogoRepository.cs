@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WSTower.WebApi.Domains;
+using WSTower.WebApi.ViewModels;
 
 namespace WSTower.WebApi.Interfaces
 {
-    public interface IJogadorRepository
+    public interface IJogoRepository
     {
-        Jogador GetById(int id);
-        IEnumerable<Jogador> GetByTeam(int id);
-        IEnumerable<Jogador> GetAll();
+        Jogo GetById(int id);
+        IEnumerable<Jogo> GetAll();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,9 +17,14 @@ namespace WSTower.WebApi.Repositories
             ctx = new WSTowerContext();
         }
 
-        public List<Jogador> GetAll()
+        public IEnumerable<Jogador> GetAll()
         {
-            return ctx.Jogador.ToList();
+            return ctx.Jogador;
+        }
+
+        public IEnumerable<Jogador> GetByTeam(int teamId)
+        {
+            return ctx.Jogador.Where(x => x.SelecaoId == teamId);
         }
 
         public Jogador GetById(int id)
