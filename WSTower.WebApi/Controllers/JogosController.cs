@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using WSTower.WebApi.Domains;
 using WSTower.WebApi.Libraries;
 using WSTower.WebApi.Repositories;
@@ -27,7 +25,6 @@ namespace WSTower.WebApi.Controllers
         }
 
         [HttpGet]
-
         public IActionResult GetAll()
         {
             try
@@ -71,7 +68,7 @@ namespace WSTower.WebApi.Controllers
                     SelecaoVisitante = _selecaoRepository.GetById(x.SelecaoVisitante).Nome,
                     PlacarFinal = $"{x.PlacarCasa} X {x.PlacarVisitante}",
                     Penaltis = (x.PlacarCasa + x.PlacarVisitante) == 0 ? "0" : $"{x.PenaltisCasa} X {x.PenaltisVisitante}"
-                }); 
+                });
 
                 return StatusCode(200, jogosViewModel);
             }
@@ -80,7 +77,6 @@ namespace WSTower.WebApi.Controllers
                 return StatusCode(400, e);
             }
         }
-
 
         [HttpGet("selecao/{nomeDaSelecao}")]
         public IActionResult GetByTeamName(string nomeDaSelecao)
@@ -109,7 +105,6 @@ namespace WSTower.WebApi.Controllers
             }
         }
 
-
         [HttpGet("data/{date}")]
         public IActionResult GetByDate(string date)
         {
@@ -137,7 +132,6 @@ namespace WSTower.WebApi.Controllers
             }
         }
 
-
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -149,7 +143,6 @@ namespace WSTower.WebApi.Controllers
 
                 var selecaoCasa = _selecaoRepository.GetById(jogo.SelecaoCasa);
                 var selecaoVisitante = _selecaoRepository.GetById(jogo.SelecaoVisitante);
-
 
                 var jogadoresCasa = _jogadorRepository.GetByTeam(selecaoCasa.Id)
                     .OrderBy(x => x.Posicao)

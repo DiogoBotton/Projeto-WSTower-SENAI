@@ -44,7 +44,7 @@ namespace WSTower.WebApi.Repositories
         public IEnumerable<Jogo> GetByTeam(string teamName)
         {
             var _selecaoRepository = new SelecaoRepository();
-            return ctx.Jogo.Where(x => _selecaoRepository.GetById(x.SelecaoVisitante).Nome.ToUpper() == teamName.ToUpper() ||
+            return ctx.Jogo.Where(x => _selecaoRepository.GetById(x.SelecaoCasa).Nome.ToUpper() == teamName.ToUpper() ||
                                             _selecaoRepository.GetById(x.SelecaoVisitante).Nome.ToUpper() == teamName.ToUpper())
                                             .ToList();
         }
