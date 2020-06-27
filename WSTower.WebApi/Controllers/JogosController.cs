@@ -24,6 +24,7 @@ namespace WSTower.WebApi.Controllers
         {
             _selecaoRepository = new SelecaoRepository();
             _jogadorRepository = new JogadorRepository();
+            _jogoRepository = new JogoRepository();
         }
 
         [HttpGet]

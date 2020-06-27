@@ -10,6 +10,6 @@ namespace WSTower.WebApi.Interfaces
     public interface IJogoRepository
     {
         Jogo GetById(int id);
-        IEnumerable<Jogo> GetAll();
+        List<Jogo> GetAll();
     }
 }

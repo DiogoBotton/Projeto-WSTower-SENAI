@@ -25,18 +25,25 @@ namespace WSTower.WebApi.Controllers
         {
             try
             {
-                var jogos = _selecaoRepository.GetAll();
+                var selecoes = _selecaoRepository.GetAll();
 
-                if (jogos == null)
+                if (selecoes == null)
                     return StatusCode(204, "Objeto não encontrado na base de dados");
 
-                var jogosViewModel = jogos.Select(x => new
+                var jogos = new JogoRepository().GetAll();
+
+                jogos.ForEach((x) =>
+                {
+                    
+                });
+
+                var jogosViewModel = selecoes.Select(x => new
                 {
                     Nome = x.Nome,
                     Bandeira = Tools.ToImage(x.Bandeira),
                     Jogadores = new JogadorRepository().GetByTeam(x.Id).Select(y => new
                     {
-                        Foto = Tools.ToImage(y.Foto),
+                        Foto = y.Foto == null ? null : Tools.ToImage(y.Foto),
                         Nome = y.Nome,
                         Posicao = y.Posicao
                     })

@@ -21,14 +21,14 @@ namespace WSTower.WebApi.Repositories
             ctx = new WSTowerContext();
         }
 
-        public IEnumerable<Jogo> GetAll()
+        public List<Jogo> GetAll()
         {
-            return ctx.Jogo;
+            return ctx.Jogo.ToList();
         }
 
         public Jogo GetById(int id)
         {
-            return ctx.Jogo.First(x => x.Id == id);
+            return ctx.Jogo.FirstOrDefault(x => x.Id == id);
         }
     }
 }

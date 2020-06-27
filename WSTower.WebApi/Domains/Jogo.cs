@@ -12,7 +12,7 @@ namespace WSTower.WebApi.Domains
         public int PlacarVisitante { get; set; }
         public int PenaltisCasa { get; set; }
         public int PenaltisVisitante { get; set; }
-        public DateTime? Data { get; set; }
+        public DateTime Data { get; set; }
         public string Estadio { get; set; }
 
         public virtual Selecao SelecaoCasaNavigation { get; set; }

@@ -24,9 +24,7 @@ namespace WSTower.WebApi.Domains
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //POR FAVOR NÃO APAGAR NENHUMA LINHA DESTE ESCOPO, APENAS COMENTAR!!!
-                //optionsBuilder.UseSqlServer("Data Source=Coloque seu servidor aqui; initial catalog=Campeonato; Integrated Security=True");
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-L3DVSSK\\SQLEXPRESS; initial catalog=Campeonato; Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-GVQ9O4O\\SQLEXPRESS; initial catalog=Campeonato; Integrated Security=True");
             }
         }
 
@@ -64,9 +62,9 @@ namespace WSTower.WebApi.Domains
 
                 entity.Property(e => e.SelecaoId).HasColumnName("SelecaoID");
 
-                entity.HasOne<Selecao>()
-                    .WithMany()
-                    .HasForeignKey("SelecaoId")
+                entity.HasOne(d => d.Selecao)
+                    .WithMany(p => p.Jogador)
+                    .HasForeignKey(d => d.SelecaoId)
                     .HasConstraintName("FK__Jogador__Selecao__2A4B4B5E");
             });
 
@@ -79,14 +77,14 @@ namespace WSTower.WebApi.Domains
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.HasOne<Selecao>()
-                    .WithMany()
-                    .HasForeignKey("SelecaoCasa")
+                entity.HasOne(d => d.SelecaoCasaNavigation)
+                    .WithMany(p => p.JogoSelecaoCasaNavigation)
+                    .HasForeignKey(d => d.SelecaoCasa)
                     .HasConstraintName("FK__Jogo__SelecaoCas__2D27B809");
 
-                entity.HasOne<Selecao>()
-                    .WithMany()
-                    .HasForeignKey("SelecaoVisitante")
+                entity.HasOne(d => d.SelecaoVisitanteNavigation)
+                    .WithMany(p => p.JogoSelecaoVisitanteNavigation)
+                    .HasForeignKey(d => d.SelecaoVisitante)
                     .HasConstraintName("FK__Jogo__SelecaoVis__2E1BDC42");
             });
 

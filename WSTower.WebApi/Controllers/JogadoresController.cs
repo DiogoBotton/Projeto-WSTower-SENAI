@@ -10,6 +10,7 @@ using WSTower.WebApi.Repositories;
 using System.Reflection.Metadata;
 using WSTower.WebApi.Domains;
 using WSTower.WebApi.Libraries;
+using System.Security.Cryptography.X509Certificates;
 
 namespace WSTower.WebApi.Controllers
 {
@@ -42,7 +43,7 @@ namespace WSTower.WebApi.Controllers
                 Selecao = new
                 {
                     selecao.Nome,
-                    bandeiraPais = Tools.ToImage(selecao.Bandeira)
+                    bandeiraPais = selecao.Bandeira == null ? null : Tools.ToImage(selecao.Bandeira)
                 },
 
                 Nome = jogador.Nome,
@@ -62,18 +63,23 @@ namespace WSTower.WebApi.Controllers
         [HttpGet("selecao/{id}")]
         public IActionResult GetAllJogadoresBySelecaoId(int id)
         {
-            var jogadores = jogadorRepository.GetAll();
-            var selecoes = selecaoRepository.GetAll();
+            var jogadores = jogadorRepository.GetByTeam(id);
+            var selecao = selecaoRepository.GetById(id);
+
+            if (selecao == null)
+                return StatusCode(404, "Esta seleção não existe.");
 
             //Retorna todos os jogadores de uma seleção
             var infoJogadores = new
             {
-                Selecao = selecoes.First(y => y.Id == id).Nome,
-                Jogadores = jogadores.Where(j => j.SelecaoId == id).Select(x => new
+                Selecao = new
                 {
-                    Bandeira = Tools.ToImage((new SelecaoRepository().GetById(x.SelecaoId).Bandeira)),
-                    Pais = new SelecaoRepository().GetById(x.SelecaoId).Nome,
-                    Foto = Tools.ToImage(x.Foto),
+                    selecao.Nome,
+                    Bandeira = selecao.Bandeira == null ? null : Tools.ToImage(selecao.Bandeira),
+                },
+                Jogadores = jogadores.Select(x => new
+                {
+                    Foto = x.Foto == null ? null : Tools.ToImage(x.Foto),
                     Posicao = x.Posicao,
                     DataNascimento = x.Nascimento,
                     Idade = Tools.GetAge(x.Nascimento),

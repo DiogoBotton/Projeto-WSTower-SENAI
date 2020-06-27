@@ -9,9 +9,16 @@ namespace WSTower.WebApi.Libraries
         public static Image ToImage(byte[] arr)
         {
             Image returnImage = null;
-            using (MemoryStream ms = new MemoryStream(arr))
+            try
             {
-                returnImage = Image.FromStream(ms);
+                using (MemoryStream ms = new MemoryStream(arr))
+                {
+                    returnImage = Image.FromStream(ms);
+                }
+            }
+            catch (Exception)
+            {
+                return returnImage;
             }
             return returnImage;
         }
