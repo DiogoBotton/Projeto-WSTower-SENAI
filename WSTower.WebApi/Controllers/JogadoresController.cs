@@ -71,8 +71,8 @@ namespace WSTower.WebApi.Controllers
                 Selecao = selecoes.First(y => y.Id == id).Nome,
                 Jogadores = jogadores.Where(j => j.SelecaoId == id).Select(x => new
                 {
-                    Bandeira = Tools.ToImage((new SelecaoRepository().GetById(x.SelecaoId).Bandeira)),
-                    Pais = new SelecaoRepository().GetById(x.SelecaoId).Nome,
+                    Bandeira = Tools.ToImage((selecaoRepository.GetById(x.SelecaoId).Bandeira)),
+                    Pais = selecaoRepository.GetById(x.SelecaoId).Nome,
                     Foto = Tools.ToImage(x.Foto),
                     Posicao = x.Posicao,
                     DataNascimento = x.Nascimento,
